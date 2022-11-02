@@ -1,0 +1,37 @@
+[
+  {
+    "_id": "81bbfaeb-a13c-45dc-9144-5de8fc866b57",
+    "name": "dummy_backend",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2023-02-24T00:52:56.670Z",
+    "modified": "2023-02-24T00:52:56.670Z",
+    "data": [
+      {
+        "name": "HOST",
+        "value": "http://localhost:3000"
+      },
+      {
+        "name": "CLIENT_USER_AGENT",
+        "value": "DUMMY_CLIENT_USER_AGENT"
+      },
+      {
+        "name": "AUTH_TOKEN",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InVzZXIxIiwiZW1haWwiOiJ1c2VyMUBkb21haW4uZW1haWwiLCJpYXQiOjE2Nzc0MDIwMDB9.HSFpMY8kTwWhVDWf8VsSGG6JXhgqpbXyjucTGobjaxw"
+      },
+      {
+        "name": "USER_EMAIL",
+        "value": "user1@domain.email"
+      },
+      {
+        "name": "USER_PASSWORD",
+        "value": "password@user1"
+      },
+      {
+        "name": "USER_NAME",
+        "value": "user1"
+      }
+    ],
+    "envFile": "../.env"
+  }
+]

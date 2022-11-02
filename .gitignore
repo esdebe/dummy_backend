@@ -1,0 +1,9 @@
+/node_modules
+/build/*
+.vercel
+.env
+/.tmp
+*.code-workspace
+!.gitkeep
+.nyc_output
+.pnpm-debug.log

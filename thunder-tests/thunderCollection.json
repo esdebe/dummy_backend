@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "5e330a42-e7b5-4281-9630-f275032634b0",
+    "colName": "dummy_backend",
+    "created": "2023-02-24T00:53:42.638Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "f5bdf9fd-d71a-4d57-8619-cfe811f784da",
+        "name": "Auth",
+        "containerId": "",
+        "created": "2023-02-26T03:02:33.135Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "d946ddf2-cf1f-4498-ade4-0a15bb2e6454",
+        "name": "Api",
+        "containerId": "",
+        "created": "2023-02-26T03:02:45.149Z",
+        "sortNum": 20000
+      },
+      {
+        "_id": "4926e7c9-c07a-457a-83cc-762a7cd29165",
+        "name": "User",
+        "containerId": "d946ddf2-cf1f-4498-ade4-0a15bb2e6454",
+        "created": "2023-02-26T03:03:37.998Z",
+        "sortNum": 30000
+      }
+    ],
+    "settings": {
+      "headers": [
+        {
+          "name": "User-Agent",
+          "value": "{{CLIENT_USER_AGENT}}"
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": "{{AUTH_TOKEN}}"
+      },
+      "tests": [],
+      "options": {
+        "baseUrl": "{{HOST}}"
+      }
+    }
+  }
+]

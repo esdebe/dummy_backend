@@ -1,0 +1,54 @@
+{
+  "extends": "fastify-tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2021",
+    "lib": [
+      "ES2021"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "paths": {
+      "@api/*": [
+        "./api/*"
+      ],
+      "@app/*": [
+        "./app/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@plugins/*": [
+        "./plugins/*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./@types/"
+    ],
+    "sourceMap": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./api/**/*.js",
+    "./api/**/*.ts",
+    "./app/**/*.js",
+    "./app/**/*.ts",
+    "./lib/**/*.js",
+    "./lib/**/*.ts",
+    "./plugins/**/*.js",
+    "./plugins/**/*.ts",
+    "./@types/*",
+    "./prisma/seed.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./.tmp"
+  ]
+}
