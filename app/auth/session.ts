@@ -40,8 +40,7 @@ const Session: FastifyPluginCallbackTypebox = (fastify, _options, next): void =>
         const payload = omit(user, ['password'])
 
         if (validPassword) {
-          reply.send(payload)
-          // reply.jwtSign(payload, (err, session) => reply.send(err || { session }))
+          reply.jwtSign(payload, (err, session) => reply.send(err || { session }))
         } else {
           reply.status(401).send('UNAUTHORIZED')
         }

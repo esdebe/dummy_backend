@@ -28,16 +28,14 @@ const List: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
       schema,
     },
     async (request, reply) => {
-      const { query, paginated } = request
-
-      const users = await paginated.user.paginate({
+      const { paginated, query } = request
+      const products = await paginated.product.paginate({
         limit: query?.per_page || 5,
         page: query.page || 1,
-        select: { name: true, email: true },
+        select: { name: true, quantity: true },
       })
 
-      const { result: data, ...pagination } = users
-      reply.send({ data, pagination })
+      reply.send(products)
     }
   )
 

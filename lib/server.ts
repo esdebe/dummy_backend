@@ -17,6 +17,7 @@ import authenticate from './authenticate'
 import hash from './hash'
 import redis from './redis'
 import onFile from './onFile'
+import paginated from './paginated'
 
 import { setFormat } from './format'
 
@@ -47,6 +48,8 @@ const initialize = async () => {
   })
 
   await fastify.register(fastifyPrismaClient)
+
+  await fastify.register(paginated)
 
   await fastify.register(fastifyDayjs)
 

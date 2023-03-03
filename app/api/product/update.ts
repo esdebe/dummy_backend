@@ -10,16 +10,8 @@ type ParamsSchema = Static<typeof paramsSchema>
 
 const bodySchema = Type.Partial(
   Type.Object({
-    password: Type.Optional(Type.String()),
-    avatar: Type.Optional(
-      Type.Object({
-        secureUrl: Type.String(),
-        url: Type.String(),
-        publicId: Type.String(),
-        format: Type.String(),
-        resourceType: Type.String(),
-      })
-    ),
+    name: Type.Optional(Type.String()),
+    quantity: Type.Optional(Type.Number()),
   })
 )
 
@@ -53,23 +45,17 @@ const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
         return
       }
 
-      const data: BodySchema = {}
-
-      if (body.password) {
-        data.password = (await fastify.hash.generate(body.password)) as string
-      }
-
-      const user = await prisma.user.update({
+      const product = await prisma.product.update({
         select: {
           name: true,
-          email: true,
+          quantity: true,
         },
         where: {
           id,
         },
-        data,
+        data: body,
       })
-      reply.send(user)
+      reply.send(product)
     }
   )
 

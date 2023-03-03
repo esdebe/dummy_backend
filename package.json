@@ -8,7 +8,8 @@
     "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx \"./{app,api,lib,routes}/**/*.{ts,tsx,js,jsx}\"",
-    "ncu": "npm-check-updates --timeout=120000"
+    "ncu": "npm-check-updates --timeout=120000",
+    "db:clear": "npx prisma db push --accept-data-loss"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
