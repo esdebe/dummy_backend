@@ -9,6 +9,7 @@ import fastifyMultipart from '@fastify/multipart'
 import fastifyPrismaClient from 'fastify-prisma-client'
 import fastifyRoutes from '@fastify/routes'
 import fastifySensible from '@fastify/sensible'
+import fastifyCors from '@fastify/cors'
 import { TypeBoxTypeProvider, TypeBoxValidatorCompiler } from '@fastify/type-provider-typebox'
 import qs from 'qs'
 
@@ -39,6 +40,8 @@ const initialize = async () => {
   })
 
   await fastify.register(fastifySensible, {})
+
+  await fastify.register(fastifyCors, { origin: '*' })
 
   await fastify.register(fastifyRoutes, {})
 

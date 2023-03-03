@@ -61,6 +61,7 @@ const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
 
       const user = await prisma.user.update({
         select: {
+          id: true,
           name: true,
           email: true,
         },

@@ -9,7 +9,7 @@
     "data": [
       {
         "name": "HOST",
-        "value": "http://localhost:3000"
+        "value": "https://dummy-backend-navy.vercel.app"
       },
       {
         "name": "CLIENT_USER_AGENT",

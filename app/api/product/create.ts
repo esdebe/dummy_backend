@@ -22,6 +22,7 @@ const Create: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
     '/',
     {
       prefixTrailingSlash: 'no-slash',
+      // onRequest: [fastify.authenticate],
       schema,
     },
     async (request, reply) => {
@@ -32,6 +33,7 @@ const Create: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
             ...body,
           },
           select: {
+            id: true,
             name: true,
             quantity: true,
           },

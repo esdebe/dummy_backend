@@ -33,7 +33,7 @@ const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
     {
       prefixTrailingSlash: 'no-slash',
       schema,
-      onRequest: [fastify.authenticate],
+      // onRequest: [fastify.authenticate],
     },
     async (request, reply) => {
       const { prisma, params, body } = request
@@ -47,6 +47,7 @@ const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
 
       const product = await prisma.product.update({
         select: {
+          id: true,
           name: true,
           quantity: true,
         },

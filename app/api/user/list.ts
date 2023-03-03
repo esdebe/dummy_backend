@@ -4,8 +4,8 @@ import type { RouteGenericInterface } from 'fastify/types/route'
 
 const querystringSchema = Type.Partial(
   Type.Object({
-    per_page: Type.Optional(Type.Integer()),
-    page: Type.Optional(Type.Integer()),
+    per_page: Type.Optional(Type.String()),
+    page: Type.Optional(Type.String()),
   })
 )
 
@@ -31,13 +31,24 @@ const List: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
       const { query, paginated } = request
 
       const users = await paginated.user.paginate({
-        limit: query?.per_page || 5,
-        page: query.page || 1,
-        select: { name: true, email: true },
+        limit: (query?.per_page ? parseInt(query.per_page, 10) : 10) || 10,
+        page: (query?.page ? parseInt(query.page, 10) : 1) || 1,
+        select: { id: true, name: true, email: true },
       })
 
       const { result: data, ...pagination } = users
-      reply.send({ data, pagination })
+      reply.send({
+        data,
+        pagination: {
+          current_page: pagination.page,
+          next_page: pagination.hasNextPage ? pagination.page + 1 : null,
+          per_page: pagination.limit,
+          prev_page: pagination.hasPrevPage ? pagination.page - 1 : null,
+          // @ts-ignore
+          total_data: pagination.count.id,
+          total_page: pagination.totalPages,
+        },
+      })
     }
   )
 
