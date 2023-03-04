@@ -9,11 +9,11 @@ const bodySchema = Type.Object({
 
 type BodySchema = Static<typeof bodySchema>
 
-interface Schema extends RouteGenericInterface {
+export interface Schema extends RouteGenericInterface {
   Body: BodySchema
 }
 
-const schema = {
+export const schema = {
   body: bodySchema,
 }
 

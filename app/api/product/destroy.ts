@@ -8,26 +8,15 @@ const paramsSchema = Type.Object({
 
 type ParamsSchema = Static<typeof paramsSchema>
 
-const bodySchema = Type.Partial(
-  Type.Object({
-    name: Type.Optional(Type.String()),
-    quantity: Type.Optional(Type.Number()),
-  })
-)
-
-type BodySchema = Static<typeof bodySchema>
-
 export const schema = {
   params: paramsSchema,
-  body: bodySchema,
 }
 
 export interface Schema extends RouteGenericInterface {
   Params: ParamsSchema
-  Body: BodySchema
 }
 
-const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
+const Destroy: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
   fastify.post<Schema>(
     '/:id',
     {
@@ -36,7 +25,7 @@ const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
       // onRequest: [fastify.authenticate],
     },
     async (request, reply) => {
-      const { prisma, params, body } = request
+      const { prisma, params } = request
 
       const id = params?.id ? parseInt(params.id, 10) : null
 
@@ -45,16 +34,10 @@ const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
         return
       }
 
-      const product = await prisma.product.update({
-        select: {
-          id: true,
-          name: true,
-          quantity: true,
-        },
+      const product = await prisma.product.delete({
         where: {
           id,
         },
-        data: body,
       })
       reply.send(product)
     }
@@ -63,4 +46,4 @@ const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => 
   next()
 }
 
-export default Update
+export default Destroy

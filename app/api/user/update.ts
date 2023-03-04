@@ -25,12 +25,12 @@ const bodySchema = Type.Partial(
 
 type BodySchema = Static<typeof bodySchema>
 
-const schema = {
+export const schema = {
   params: paramsSchema,
   body: bodySchema,
 }
 
-interface Schema extends RouteGenericInterface {
+export interface Schema extends RouteGenericInterface {
   Params: ParamsSchema
   Body: BodySchema
 }
