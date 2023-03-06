@@ -1,6 +1,7 @@
-import { FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox'
 import { Type, Static } from '@sinclair/typebox'
+import { FastifyReply } from 'fastify'
 import type { RouteGenericInterface } from 'fastify/types/route'
+import { FastifyRequestTypebox } from '../../../lib/type-helper'
 
 const querystringSchema = Type.Partial(
   Type.Object({
@@ -19,29 +20,17 @@ export interface Schema extends RouteGenericInterface {
   Querystring: QuerystringSchema
 }
 
-const List: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
-  fastify.get<Schema>(
-    '/',
-    {
-      prefixTrailingSlash: 'no-slash',
-      onRequest: [fastify.authenticate],
-      schema,
-    },
-    async (request, reply) => {
-      const { query, paginated, paginatedFormatter } = request
+type Handler = (request: FastifyRequestTypebox<typeof schema>, reply: FastifyReply) => Promise<void>
 
-      const users = await paginated.user.paginate({
-        limit: (query?.per_page ? parseInt(query.per_page, 10) : 10) || 10,
-        page: (query?.page ? parseInt(query.page, 10) : 1) || 1,
-        select: { id: true, name: true, email: true },
-        strictLimit: true,
-      })
+export const handler: Handler = async (request, reply) => {
+  const { query, paginated, paginatedFormatter } = request
 
-      reply.send(paginatedFormatter(users))
-    }
-  )
+  const users = await paginated.user.paginate({
+    limit: (query?.per_page ? parseInt(query.per_page, 10) : 10) || 10,
+    page: (query?.page ? parseInt(query.page, 10) : 1) || 1,
+    select: { id: true, name: true, email: true },
+    strictLimit: true,
+  })
 
-  next()
+  reply.send(paginatedFormatter(users))
 }
-
-export default List

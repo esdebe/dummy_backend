@@ -8,6 +8,7 @@ const Home: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
     },
     async (_request, reply) => {
       const { redis } = fastify
+
       await redis.set('foo', 'test')
       const x = await redis.get('foo')
       reply.send({ success: true, x })

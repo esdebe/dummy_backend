@@ -8,6 +8,9 @@ interface FastifyInstanceHash {
 }
 
 declare module 'fastify' {
+  interface FastifyRequest {
+    hash: FastifyInstanceHash
+  }
   interface FastifyInstance {
     hash: FastifyInstanceHash
   }
@@ -40,10 +43,12 @@ const verify: FastifyInstanceHash['verify'] = async (password, hashed) => {
 }
 
 const fastifyHashDecorator: FastifyPluginAsync = async (fastify) => {
-  fastify.decorate('hash', {
-    verify,
-    generate,
-  })
+  fastify
+    .decorate('hash', {
+      verify,
+      generate,
+    })
+    .decorateRequest('hash', { getter: () => fastify.hash })
 }
 
 export default fastifyPlugin(fastifyHashDecorator, {

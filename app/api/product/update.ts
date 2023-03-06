@@ -1,6 +1,7 @@
-import { FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox'
+import { FastifyReply } from 'fastify'
 import { Type, Static } from '@sinclair/typebox'
 import type { RouteGenericInterface } from 'fastify/types/route'
+import { FastifyRequestTypebox } from '../../../lib/type-helper'
 
 const paramsSchema = Type.Object({
   id: Type.String(),
@@ -27,40 +28,28 @@ export interface Schema extends RouteGenericInterface {
   Body: BodySchema
 }
 
-const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
-  fastify.post<Schema>(
-    '/:id',
-    {
-      prefixTrailingSlash: 'no-slash',
-      schema,
-      // onRequest: [fastify.authenticate],
+type Handler = (request: FastifyRequestTypebox<typeof schema>, reply: FastifyReply) => Promise<void>
+
+export const handler: Handler = async (request, reply) => {
+  const { prisma, params, body } = request
+
+  const id = params?.id ? parseInt(params.id, 10) : null
+
+  if (id === null) {
+    reply.send('error')
+    return
+  }
+
+  const product = await prisma.product.update({
+    select: {
+      id: true,
+      name: true,
+      quantity: true,
     },
-    async (request, reply) => {
-      const { prisma, params, body } = request
-
-      const id = params?.id ? parseInt(params.id, 10) : null
-
-      if (id === null) {
-        reply.send('error')
-        return
-      }
-
-      const product = await prisma.product.update({
-        select: {
-          id: true,
-          name: true,
-          quantity: true,
-        },
-        where: {
-          id,
-        },
-        data: body,
-      })
-      reply.send(product)
-    }
-  )
-
-  next()
+    where: {
+      id,
+    },
+    data: body,
+  })
+  reply.send(product)
 }
-
-export default Update
