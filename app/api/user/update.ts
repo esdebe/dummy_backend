@@ -1,7 +1,6 @@
+import { FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox'
 import { Type, Static } from '@sinclair/typebox'
-import { FastifyReply } from 'fastify'
 import type { RouteGenericInterface } from 'fastify/types/route'
-import { FastifyRequestTypebox } from '../../../lib/type-helper'
 
 const paramsSchema = Type.Object({
   id: Type.String(),
@@ -36,34 +35,46 @@ export interface Schema extends RouteGenericInterface {
   Body: BodySchema
 }
 
-type Handler = (request: FastifyRequestTypebox<typeof schema>, reply: FastifyReply) => Promise<void>
-
-export const handler: Handler = async (request, reply) => {
-  const { prisma, params, body } = request
-
-  const id = params?.id ? parseInt(params.id, 10) : null
-
-  if (id === null) {
-    reply.send('error')
-    return
-  }
-
-  const data: BodySchema = {}
-
-  if (body.password) {
-    data.password = (await request.hash.generate(body.password)) as string
-  }
-
-  const user = await prisma.user.update({
-    select: {
-      id: true,
-      name: true,
-      email: true,
+const Update: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
+  fastify.post<Schema>(
+    '/:id',
+    {
+      prefixTrailingSlash: 'no-slash',
+      schema,
+      onRequest: [fastify.authenticate],
     },
-    where: {
-      id,
-    },
-    data,
-  })
-  reply.send(user)
+    async (request, reply) => {
+      const { prisma, params, body } = request
+
+      const id = params?.id ? parseInt(params.id, 10) : null
+
+      if (id === null) {
+        reply.send('error')
+        return
+      }
+
+      const data: BodySchema = {}
+
+      if (body.password) {
+        data.password = (await request.hash.generate(body.password)) as string
+      }
+
+      const user = await prisma.user.update({
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+        where: {
+          id,
+        },
+        data,
+      })
+      reply.send(user)
+    }
+  )
+
+  next()
 }
+
+export default Update

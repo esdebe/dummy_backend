@@ -22,9 +22,6 @@ import paginated from './paginated'
 
 import { setFormat } from './format'
 
-import Api from '../app/api'
-import Home from '../app/home'
-
 dotenv.config()
 
 const fastify = Fastify({
@@ -73,16 +70,12 @@ const initialize = async () => {
 
   const rootPath = path.resolve(__dirname, '..')
 
-  const authRoutesPath = path.join(rootPath, 'app', 'auth')
+  const appPath = path.join(rootPath, 'app')
 
   await fastify.register(fastifyAutoload, {
-    dir: authRoutesPath,
-    prefix: '/auth',
+    dir: appPath,
     ignorePattern: /types/,
   })
-
-  await fastify.register(Api)
-  await fastify.register(Home)
 }
 
 export { initialize, fastify }
