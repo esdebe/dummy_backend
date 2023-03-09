@@ -33,7 +33,6 @@ const List: FastifyPluginCallbackTypebox = (fastify, _options, next): void => {
         limit: query?.per_page ? parseInt(query.per_page, 10) : 10,
         page: query?.page ? parseInt(query.page, 10) : 1,
         select: { id: true, name: true, quantity: true },
-        strictLimit: true,
       })
 
       reply.send(paginatedFormatter(products))
